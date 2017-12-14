@@ -1,0 +1,183 @@
+---
+title: "Model Cheat Sheet"
+author: "Andrew Young"
+date: "March 3, 2016"
+
+# output:
+#   pdf_document:
+#     toc: true
+#     toc_depth: 3                    # default = 3
+#     number_sections: true           # add section numbering to headers
+#     fig_width: 6                    # default = 6
+#     fig_height: 4.5                 # default = 4.5
+#     fig_caption: true               # default = false
+#     highlight: tango                # specifies the syntax highlighting style
+# fontsize: 11pt
+# geometry: margin=1in
+# linkcolor: blue
+# urlcolor: blue
+# citecolor: blue
+
+output:
+  html_document:                  # http://rmarkdown.rstudio.com/html_document_format.html
+  # prettydoc::html_pretty:         # https://cran.r-project.org/web/packages/prettydoc/vignettes/architect.html
+    toc: true                     # table of content
+    toc_float:                    # float the table of contents to the left of main document content
+      collapsed: false              # default = true. TOC appears with only the top-level headers (H2)
+      toc_depth: 4                  # default = 3
+    number_sections: true         # add section numbering to headers
+    highlight: tango              # specifies the syntax highlighting style
+    theme: simplex                 # Bootswatch/Beamer theme. Valid bootswatch themes: "cerulean", "journal", "flatly",
+                                  # "readable", "spacelab", "united", and "cosmo".
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Regression {.tabset}
+
+**Regression**: the estimation of continuous response (dependent) variables, as opposed to the discrete response variables used in classification.
+
+**Parametric**: the regression function is defined in terms of a finite number of unknown parameters that are estimated from the data. 
+
+**Nonparametric**: techniques that allow the regression function to lie in a specified set of functions, which may be infinite-dimensional. There are fewer nonparametric techniques and while more robust, it is still much less popular.
+
+## Linear {.tabset}
+### Assumptions
+
+1. The relationship between predictors and response is additive and linear. The additivity assumption assumes the predictors, $X$ have independent effects on $Y$, so the error terms must also be uncorrelated. 
+2. Non-constant variance of error terms is another assumption, or that the magnitutde of residuals do not increase with the the fitted values. 
+3. Advantages: interpretable results, works well on some real-world problems. 
+4. Disadvantages: can't account for synergy/interaction effects among predictors (e.g. quality of equipment and effectiveness of workers).
+
+### Potential problems
+1. *non-linearity of the response-predictor relationships*. solution: residual plots. 
+2. *correlation of error terms*. example: common in time-series data (adjacent residuals have similar values). also would be violated if individuals' heights are predicted from their weights and some individuals were from the same household, ate the same diet, or were exposed to the same environmental factors. possible solution: many methods.
+3. *non-constant variance of error terms (heteroskedacity)*. this is visible from a funnel or a fan shape in the residual plot. solution: a concave transformation of $Y$ like $\text{log }Y$ or $\sqrt{Y}$, increasing shrinkage of larger responses and reducing heteroskedacity. another solution is weighted least squares, when we have a good idea of the variance of each response.
+4. *outliers*
+5. *high-leverage points*
+6. *collinearity*
+
+
+### Model Assessment
+*Model accuracy*: residual standard error (RSE) and $R^2$
+*RSE* = estimate of the standard deviation of the error term, $\epsilon$, one of which exists for and is associated with each observation. RSE is a measure of the \emph{lack of fit} of the model to the data. Since it is measured in units of $Y$, it is not always clear what a "good" RSE is. The $R^2$ provides an alternative measure of fit.
+    $$ RSE=\sqrt{\frac{1}{n-2}\text{RSS}} = \sqrt{\frac{1}{n-2}\sum\limits_{i=1}^{n}(y_i-\hat{y}_i)^2} $$
+    $R^2$ = the proportion of variance in $Y$ explained by $X$, is independent of $Y$, and limited to $[0,1]$. 
+    $$ R^2 = \frac{\text{TSS}-\text{RSS}}{TSS} $$
+    where
+    $$\text{TSS} = \sum(y_i-\bar{y})^2$$
+        The TSS measures the total variance in the response $Y$. It represents the inherent variability in the response before the regression was performed. In contrast, the RSS measures the amount of unexplained variability after performing the regression. 
+
+## Polynomial regression
+allows non-linear relationships, a non-linear fit, in a linear model:
+    $$ Y = \beta_0 + \beta_1 X_1 + \beta_2 X_1^2 $$
+    
+\rule{\textwidth}{1pt}
+
+# Non-linear regression {.tabset}
+## Regression Trees
+## Support Vector Regression - encode response as numerical continuous
+## Ridge regression
+## LASSO
+  
+# Classification (K-classes) {.tabset}
+
+## K=2 (binary): {.tabset}
+### Classification Trees
+
+Let's look at an example using chest pain data. Suppose a binary variable, **HD** for 300 patients who were admitted to a hospital with chest pain. An outcome value of **"Yes"** indicates the presence of heart disease based on an angiographic test (a test that involves taking pictures of the blood flow in an artery), while **"No"** means no heart disease. There are 13 predictors: including **Age**, **Gender**, **Chol** (a cholesterol measurement), **Tha** (Thalium stress test) and other heart and lung function measurements. Cross-validation testing suggests a pruned tree with six terminal nodes, or a tree size of 6, results in the lowest cross-validation error. Note that classification trees allow both continuous and discrete predictors.
+
+![](decision_tree.png)
+
+### Support Vector Classifiers
+### Logistic Regression
+
+logistic/logit regression (aka logit model) has three settings: binomial, multinomial, or ordinal. It is an alternative to Fisher's 1936 method, linear discriminant analysis (LDA). The logistic model has fewer assumptions than discriminant analysis and makes no assumption on the distribution of the independent variables. 
+
+**binomial logistic regression** - the dependent variable (DV) is categorical (binomial)
+
+**multinomial logistic regression** - logistic regression where dependent variable has more than two categories
+
+**ordinal logistic regression** - multiple categories whose numeric encoding suggests a natural ordering or ranking, like on a number line. One example would be a patient's pain level, 1 to 10 as opposed fruit, where orange = 1, yellow = 2, etc.
+
+**bagged logistic regression** - Bagging, aka **B**ootstrap **agg**regat**ing**, is a relatively simple way to increase the power of a predictive statistical model by taking multiple random samples (with replacement) from your training data , and using each of these samples to construct a separate model and separate predictions for your test set. These predictions are then averaged to create a, hopefully more accurate, final prediction value.
+
+## K>=2 (multiclass): {.tabset}
+### Bayes Classifier
+### Logistic Regression (multinomial, ordinal)
+### Linear Discriminant Analysis (LDA)
+
+In practice, LDA is used for dimensionality reduction and would be just another preprocessing step for a typical machine learning or pattern classification task. However, for low-dimensional datasets like Iris, a quick glance at some histograms would already be very informative. 
+
+![](lda_iris.png)
+
+Another simple, but very useful technique would be to use feature selection algorithms; in case you are interested, I have a more detailed description on sequential feature selection algorithms here, and scikit-learn also implements a nice selection of alternative approaches (e.g. removing features with low variance because need variability for discriminative power.)
+
+#### Assumptions
+1. When used as a classifier, LDA assumes normal distributed data, features that are statistically independent, and identical covariance matrices for every class. 
+2. LDA can be used for dimensionality reduction reasonably well even if those assumptions are violated. For classification tasks, LDA can be quite robust to the distribution of the data.
+
+Step 1: Computing the d-dimensional mean vectors
+Step 2: Computing the Scatter Matrices
+Step 3: Solving the generalized eigenvalue problem for the matrix S???1WSBSW???1SB
+Step 4: Selecting linear discriminants for the new feature subspace
+Step 5: Transforming the samples onto the new subspace
+![](lda_1.png)
+
+### Neural networks
+
+
+### k-nearest neighbors (KNN)
+
+
+![](knn_regression.png)
+
+
+### Support Vector Machines (SVMs)
+
+SVM optimal hyperplane:
+![](SVM_kernel_machine.png)
+
+![Kernel machines are used to compute non-linearly separable functions into a higher dimension linearly separable function.](SVM_optimal-hyperplane.png)
+
+
+
+probit regression - estimates probabilities using a cumulative normal distribution curve (normal cdf). logit model estimates probabilities using the cumulative logistic distribution.
+
+# *Estimating parameters/penalty functions*
+
+![](elastic net viz.jpg)
+
+**LASSO (L1)** - stands for "least absolute shrinkage and selection operator." uses the same loss function as ridge, but has a different penalty term. If your covariates are highly correlated, elastic net is a better choice. The LASSO does both parameter shrinkage and variable selection automatically. Ridge is a bit easier to implement and faster to compute. Generally, if you have only a few variables with a medium/large effect, go with LASSO.
+
+**Ridge regression (L2)** - aka **Tikhonov regularization**. uses the same loss function as LASSO, but has a different penalty term. Ridge regression can't zero out coefficients; thus, you either end up including all the coefficients in the model or none of them. Ridge is a bit easier to implement and faster to compute. Generally, when you have many small/medium sized effects you should go with ridge.
+
+**elastic net** - a regularized regression method that linearly combines the L1 and L2 penalties of the lasso and ridge methods. *scikit-learn* offers elastic net regularization for linear regression, logistic regression and linear support vector machines. **Apache Spark** provides support for Elastic Net Regression in its **MLlib** machine learning library. The method is available as a parameter of the more general LinearRegression class.
+
+generalised double pareto - 
+
+horseshoe - 
+
+bma - 
+
+bridge - 
+
+Non-Negative Garotte (NNG) - consistent in terms of estimation and variable selection. Unlike LASSO and ridge regression, NNG requires an initial estimate that is then shrunk towards the origin. Breiman recommends the least-squares solution for the initial estimate (you may however want to start the search from a ridge regression solution and use something like GCV to select the penalty parameter. 
+
+# Both classification & regression 
+## random forests
+
+(aliases: random decision forests). An ensemble learning method. Outputs the class that is the mode (most frequently occuring) of the classes (classification) or mean prediction (regression) of the individual trees. Random forests correct for decision trees' habit of overfitting (low [bias](#bias), high [variance](#variance)) to their training set.
+
+support vector machines - enlarge feature space to accomodate a non-linear boundary between classes. often gives results similar to logistic regression due to the similarities between their loss functions. SVMs behave better than logistic regression when classes are well separated, otherwise logistic regression is better.
+
+# Model selection criteria
+  AIC - measures the relative quality of statistical models for a given set of data. $AIC = 2k - 2ln(L)$, where $k$ is the number of estimated parameters i nthe model and $L$ is the maximum value of the likelihood function of the model. Given a set of candidate models for the data, the preferred model is the one with the minimum AIC value. Hence AIC rewards goodness of fit (as assessed by the likelihood function), but it also includes a penalty that is an increasing function of the number of estimated parameters. The penalty discourages overfitting (increasing the number of parameters in the model almost always improves the goodness of the fit).
+  
+# Appendix
+
+<a id="bias"></a> **bias** is error from erroneous assumptions in the learning algorithm. High bias can cause an algorithm to miss the relevant relations between features and target outputs (underfitting).
+
+<a id="variance"></a> **variance** is error from sensitivity to small fluctuations in the training set. High variance can cause an algorithm to model the random noise in the training data, rather than the intended outputs (overfitting).
