@@ -1,4 +1,8 @@
+# This file is a collection of helper functions.
+# 
+
 # Multiple plot function
+# Credit to Winston Chang & his website: http://www.cookbook-r.com/
 # ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)
 # - cols:   Number of columns in layout
 # - layout: A matrix specifying the layout. If present, 'cols' is ignored.
@@ -42,6 +46,16 @@ panel.cor <- function(x, y, digits=2, prefix="", cex.cor)
 
 ## Check packages function.
 ## The following was written by Dr. Colin Rundel of Duke University.
+##
+## Example usage 1: (assumes you want to call from Github
+##   library(devtools)  # Give source_url().
+## suppressMessages(    # Load check_packages().
+##   source_url("https://raw.githubusercontent.com/aw236/r.functions/master/functions.R")) 
+
+## Example usage 2: (assumes "check_packages" is a function saved in a .R file called "check_packages.R"
+## source("check_packages.R") # Load check_packages function.
+## suppressMessages(check_packages(c('e1071','rgdal','raster',"devtools", "leafletR", "stringr", "rgeos", "fields","maptools", "ggplot2", "plyr"))) # Ensures listed packages are installed and load them. 
+
 check_packages = function(names)
 {
   for(name in names) {
