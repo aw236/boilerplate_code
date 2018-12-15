@@ -1,0 +1,52 @@
+-- This is an example of a personal Hive configuration file
+-- Installation instructions:
+--     Download this file
+--     Copy this file to the same server you run Hive from
+--     The following configurations loaded whenever Hive is called
+
+-------------------
+-- Hive UDF JARs --
+-------------------
+ADD JAR /home/anyoung/brickhouse-0.6.0.jar;
+ADD JAR /home/anyoung/haversineUDF.jar;
+CREATE TEMPORARY FUNCTION array_intersect AS "brickhouse.udf.collect.ArrayIntersectUDF";
+CREATE TEMPORARY FUNCTION haversine AS "Haversine";
+
+---------------
+-- Usability --
+---------------
+SET hive.cli.print.header = true;
+SET hive.resultSET.use.unique.column.names = false;
+
+-----------------
+-- Performance --
+-----------------
+SET HADOOP_HEAPSIZE = 8192;
+SET hive.auto.convert.join = false;
+SET hive.auto.convert.join.noconditionaltask = false;
+SET hive.exec.compress.intermediate = true;
+SET hive.exec.compress.output = true;
+SET hive.exec.orc.split.strategy = BI;
+SET hive.optimize.index.filter = true;
+SET mapred.child.java.opts = -Xmx8192M;
+
+SET mapred.job.queue.name = queue1;
+--SET mapred.job.queue.name = queue2;
+
+SET mapreduce.map.memory.mb = 8192;
+SET mapreduce.map.output.compress.codec = org.apache.hadoop.io.compress.SnappyCodec;
+SET mapreduce.map.output.compress = true;
+SET mapreduce.reduce.memory.mb = 8192;
+
+
+-----------
+-- Notes --
+-----------
+-- References for Hive settings: 
+-- 1. https://www.cloudera.com/documentation/enterprise/5-8-x/topics/admin_nn_memory_config.html
+-- 2. https://cwiki.apache.org/confluence/display/Hive/LanguageManual+JoinOptimization#LanguageManualJoinOptimization-OptimizeAutoJoinConversion
+--
+-- HADOOP_HEAPSIZE sets the JVM heap size for all Hadoop project servers such as HDFS, YARN, and MapReduce. HADOOP_HEAPSIZE is an integer passed to the JVM as the maximum memory (Xmx) argument. For example:
+-- hive.auto.convert.join is set to true the optimizer not only converts joins to mapjoins but also merges MJ* patterns as much as possible.
+-- hive.auto.convert.join.noconditionaltask = true; optimizes auto join conversion and is advertised positively. In my experience, setting it to true has caused errors that are resolved by setting it to false.
+-- hive.exec.compress.intermediate enables compression on intermediate data. A complex Hive query is usually converted to a series of multi-stage MapReduce jobs after submission, and these jobs will be chained up by the Hive engine to complete the entire query. So “intermediate output” here refers to the output from the previous MapReduce job, which will be used to feed the next MapReduce job as input data.
