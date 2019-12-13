@@ -1,0 +1,11 @@
+# 1. Install Anaconda Navigator. 
+# 2. Create an environment and install: Python 2/3, R, RStudio & JupyterLab.
+# 3. On PC, open Anaconda Prompt. On Mac, open Terminal.
+# documentation: https://plotnine.readthedocs.io/en/stable/installation.html
+conda activate python37dev_env
+conda install git pip
+pip install git+git://github.com/has2k1/plotnine.git
+
+# Install extensions for JupyterLab via the tab at the left.
+# 1. "toc"
+# 2. ""
