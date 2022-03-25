@@ -336,8 +336,8 @@ pair2=mvrnorm(N,c(mean1,mean2),Sigma,empirical=T)
 
 my_data=data.frame(cbind(pair1,pair2))
 
-ggcorplot(
-	data = my_data
-	, var_text_size = 30
-	, cor_text_limits = c(2,30)
-)
+#ggcorplot(
+#	data = my_data
+#	, var_text_size = 30
+#	, cor_text_limits = c(2,30)
+#)
