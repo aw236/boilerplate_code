@@ -1,0 +1,4 @@
+name: python37viz
+channels:
+  - defaults
+  - conda-forge
