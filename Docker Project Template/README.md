@@ -1,13 +1,21 @@
+# Intro
+
 This Dockerfile specifies that the base image should be based on [datascience-notebook](https://hub.docker.com/layers/jupyter/datascience-notebook/python-3.10/images/sha256-887e88f6e6ceb39ec34f5030527268f4f5bb7062efa176281652872038266621?context=explore). Then, I install some system dependencies and Python libraries that are commonly used in data science, and copies the files in the current directory into the /app directory in the container. The command to run when the container is started is specified at the end with `CMD`.
 
+# Motivation
+
 I wanted a solution that:
+
     a) Minimized the probability of me hearing/others having to report "it doesn't work on my machine"
     b) Reproducibility of my work across my machines (new laptops, etc.)
     c) Not having to install different sets of packages with distinct package versions that are all compatible with each other
     d) *Never* being forced to install any packages to run anything.
+    
 My solution is this gigantic Docker image with more packages than most any single project will need. Once I am done codesmithing/developing my work, then I have use some Python/R code I wrote to list all imported Python modules / R libraries and I save them in a new `requirements.txt`. Hence, this new `requirements.txt` contains only the Python modules/R libraries that I ended up needing for my project, which I wouldn't know a priori. Pro of this approach is that I have already wrestled with different versions of different packages and managed to build a working environment which I can then just re-use for project after project before another major wrestling match in a few years when I want to update one or more modules/libraries/packages. Con of this approach is that it shifts some work to the end, where I need to engage this process of creating a shorter `requirements.txt` at the conclusion of each project. But, that should be much more painless and still much more efficient overall.
 
 In the end, I end up with a lightweight Docker image that installs only what is needed to reproduce my work. So I start off breaking [Docker best practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/) but end up conforming to them in the end.
+
+# Instructions
 
 To build the Docker image, navigate to the directory where the Dockerfile is located and run the following command:
 
@@ -50,6 +58,8 @@ nvidia-docker run -it -p 8888:8888 -v /PATH_TO_HOST_FOLDER:/PATH_TO_CONTAINER_FO
 
 
 ----------------------------------------------------
+# Access the emphemeral, Docker-based Jupyter Lab Environment
+
 Go to the Docker Desktop app. Click `Open with Browser` icon next to the currently running Docker container. Alternatively, visit: `http://localhost:10000/` and use the Jupyter Token specified in the `docker run` command: `letmein`.
 
 Reference: https://github.com/jupyter/docker-stacks/issues/1187
