@@ -4,6 +4,7 @@ Boilerplate Code
 This folder contains:
 
 ==== Docker Set-up =====
+
     Summary: I wanted a solution that:
         a) Minimized the probability of me hearing/others having to report "it doesn't work on my machine"
         b) Reproducibility of my work across my machines (new laptops, etc.)
