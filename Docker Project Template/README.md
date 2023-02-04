@@ -1,4 +1,4 @@
-This Dockerfile specifies that the base image should be the Python 3.8 image, installs some system dependencies and Python libraries that are commonly used in data science, and copies the files in the current directory into the /app directory in the container. The command to run when the container is started is specified at the end with CMD ["python", "main.py"].
+This Dockerfile specifies that the base image should be the Python 3.8 image, installs some system dependencies and Python libraries that are commonly used in data science, and copies the files in the current directory into the /app directory in the container. The command to run when the container is started is specified at the end with `CMD`.
 
 To build the Docker image, navigate to the directory where the Dockerfile is located and run the following command:
 
@@ -40,8 +40,7 @@ nvidia-docker run -it -p 8888:8888 -v /PATH_TO_HOST_FOLDER:/PATH_TO_CONTAINER_FO
 - output: /app
 
 
-
 ----------------------------------------------------
-Go to the Docker Desktop app. Click "Open with Browser" icon next to the currently running Docker container. Alternatively, visit: http://localhost:10000/ and use the Jupyter Token specified in the `docker run` command (letmein).
+Go to the Docker Desktop app. Click `Open with Browser` icon next to the currently running Docker container. Alternatively, visit: `http://localhost:10000/` and use the Jupyter Token specified in the `docker run` command: `letmein`.
 
 Reference: https://github.com/jupyter/docker-stacks/issues/1187
