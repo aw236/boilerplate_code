@@ -1,6 +1,7 @@
 CREATE ROLE "READONLY" COMMENT = 'A custom role called READONLY that only has the ability to read data';
 GRANT ROLE "READONLY" TO ROLE "SYSADMIN";
-  
+GRANT ROLE "READONLY" TO USER usernamehere;
+
 GRANT USAGE 
   ON WAREHOUSE COMPUTE_WH 
   TO ROLE READONLY;
